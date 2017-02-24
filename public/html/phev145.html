@@ -1,0 +1,43 @@
+<div ng-controller="phevCtrl" class="container" style="background-color: rgba(255, 255, 255, 0.8)">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <h2>Average Monthly Temperature for 2007 - 2016</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <input type="text" ng-model="airport" placeholder="Enter your airport">
+      <button ng-click="generate()">Get Data</button>
+      <br><a href="/img/airport.png">What's my airport?</a><br>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Dec</th>
+            <th>Jan</th>
+            <th>Feb</th>
+            <th>March</th>
+            <th>April</th>
+            <th>May</th>
+            <th>June</th>
+            <th>July</th>
+            <th>Aug</th>
+            <th>Sept</th>
+            <th>Oct</th>
+            <th>Nov</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(year, months) in temps">
+            <td>{{year}}</td>
+            <td ng-repeat="(month, temp) in months">{{temp}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

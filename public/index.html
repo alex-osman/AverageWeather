@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="ClimateChange">
 <head>
   <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
   <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
@@ -13,30 +13,25 @@
   background-size: cover;
   background-color: #fefeff;
 ">
-  <div style="background-color: rgba(255, 255, 255, 0.9)">
-    <ul class="nav nav-tabs" style="overflow: auto; padding: 6px">
+  <div ng-controller="mainCtrl" style="background-color: rgba(255, 255, 255, 0.9)">
+    <ul class="nav nav-tabs" style="overflow: auto; padding: 6px; margin-left: 5%;">
       <li role="presentation">
-        <img src="img/earth.gif" height="50">Climate Change Day
+        <img src="img/earth.gif" height="30">
+      </li>
+      <li role="presentation">
+        <a href='#/home'>Climate Change Day</a>  
+      </li>
+      <li role="presentation">
+        <a href="#/phev145">Phev 145</a>
       </li>
     </ul>
   </div>
-  <div class="container" style="background-color: rgba(255, 255, 255, 0.8)">
-    <div class="row">
-      <div class="col-md-8 col-md-offset-2">
-        <h2>March 23rd is International Climate Change Day!</h2>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-4 col-md-offset-2">
-        <h2>Nasa Fact</h2>
-        <img src="http://climate.nasa.gov/internal_resources/37">
-        <p>
-          Global sea level rose about 17 centimeters (6.7 inches) in the last century. The rate in the last decade, however, is nearly double that of the last century.
-          <br>
-          <i>Image: Republic of Maldives: Vulnerable to sea level rise</i>
-        </p>
-      </div>
-    </div>
+  <div ng-view>
+    
   </div>
 </body>
+<script src="/bower_components/angular-route/angular-route.min.js"></script>
+<script src="/js/controllers/mainCtrl.js"></script>
+<script src="/js/controllers/homeCtrl.js"></script>
+<script src="/js/controllers/phevCtrl.js"></script>
 </html>

@@ -1,0 +1,17 @@
+{
+  "name": "public",
+  "homepage": "https://github.com/alex-osman/AverageWeather",
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ng-tour": "ng-route#*"
+  }
+}
