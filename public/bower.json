@@ -12,6 +12,7 @@
     "tests"
   ],
   "dependencies": {
-    "ng-tour": "ng-route#*"
+    "ng-tour": "ng-route#*",
+    "angular-route": "^1.6.2"
   }
 }
