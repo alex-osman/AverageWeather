@@ -10,11 +10,36 @@
       <button ng-click="generate()">Get Data</button>
       <br><a href="/img/airport.png">What's my airport?</a><br>
       <br><p>{{loading}}</p>
+      <a ng-if="temps" ng-href="/excel/{{airport}}">Download</a>
     </div>
   </div>
+
+  <style>
+    .winter { background-color: rgba(32, 66, 130, .12); }
+    .spring { background-color: rgba(208, 157, 40, .12); }
+    .summer { background-color: rgba(200, 66, 40, .12); }
+    .autumn { background-color: rgba(140, 110, 45, .12); }
+  </style>
+
   <div class="row">
     <div class="col-md-10 col-md-offset-1">
+      <h3>{{city}}</h3>
       <table class="table table-bordered">
+        <colgroup>
+          <col class=""/>
+          <col class="winter"/>
+          <col class="winter"/>
+          <col class="winter"/>
+          <col class="spring"/>
+          <col class="spring"/>
+          <col class="spring"/>
+          <col class="summer"/>
+          <col class="summer"/>
+          <col class="summer"/>
+          <col class="autumn"/>
+          <col class="autumn"/>
+          <col class="autumn"/>
+        </colgroup>
         <thead>
           <tr>
             <th>Year</th>
