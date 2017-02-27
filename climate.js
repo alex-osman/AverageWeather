@@ -77,14 +77,19 @@ app.get('/api/:airport/:start/:end', function(req, res) {
 
 app.get('/api/city/:airport', function(req, res) {
   var airport = req.params.airport;
-  console.log("Searching " + airport)
 
-  request('https://www.wunderground.com/history/airport/' + airport, function(err, response, body) {
-    var title = body.split('title>')[1].substring(20);
-    var city = title.substring(0, title.indexOf(' |'));
-    cities[airport] = city;
-    res.send(city);
-  })
+  if (cities[airport])
+    res.send(cities[airport]);
+  else {
+    console.log("Searching " + airport)
+
+    request('https://www.wunderground.com/history/airport/' + airport, function(err, response, body) {
+      var title = body.split('title>')[1].substring(20);
+      var city = title.substring(0, title.indexOf(' |'));
+      cities[airport] = city;
+      res.send(city);
+    })
+  }
 })
 
 app.get('/excel/:airport/:start/:end', function(req, res){
