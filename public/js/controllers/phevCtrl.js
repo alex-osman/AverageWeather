@@ -1,7 +1,8 @@
 angular
   .module("ClimateChange")
   .controller("phevCtrl", ["$scope", "$http", function($scope, $http) {
-
+    $scope.start = 2007
+    $scope.end = 2016
 
     $scope.generate = function() {
       $scope.city = ""
@@ -11,7 +12,7 @@ angular
         console.log(city)
         $scope.city = city;
       })
-      $http.get('/api/' + $scope.airport)
+      $http.get('/api/' + $scope.airport + '/' + $scope.start + '/' + $scope.end)
       .success(function(data) {
         console.log(data);
         $scope.loading = "";

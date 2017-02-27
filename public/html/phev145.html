@@ -1,16 +1,17 @@
 <div ng-controller="phevCtrl" class="container" style="background-color: rgba(255, 255, 255, 0.8)">
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
-      <h2>Average Monthly Temperature for 2007 - 2016</h2>
+      <h2>Average Monthly Temperature for {{start}} - {{end}}</h2>
     </div>
   </div>
   <div class="row">
     <div class="col-md-10 col-md-offset-1">
-      <input type="text" ng-model="airport" placeholder="Enter your airport">
-      <button ng-click="generate()">Get Data</button>
+      <input type="text" ng-model="airport" placeholder="Enter your airport"> <button ng-click="generate()">Get Data</button>
       <br><a href="/img/airport.png">What's my airport?</a><br>
+      Years: <input type="number" ng-model="start" min="1990" max="2016" step="1">
+      to&nbsp;<input type="number" ng-model="end" min="1990" max="2016" step="1">
       <br><p>{{loading}}</p>
-      <a ng-if="temps" ng-href="/excel/{{airport}}">Download</a>
+      <a ng-if="temps" ng-href="/excel/{{airport}}/{{start}}/{{end}}">Download</a>
     </div>
   </div>
 
