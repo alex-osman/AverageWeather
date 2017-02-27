@@ -43,36 +43,36 @@ app.get('/api/:airport/:start/:end', function(req, res) {
 
   console.log("Gathering " + airport + " " + start + "-" + end)
 
-  if (airports[airport])
-    res.send(airports[airport])
-  else {
-    var count = 0;
-    obj = {}
-    var years = [];
-    for (var i = start; i <= end; i++) {
-      years.push(i);
-    };
-    years.forEach(function(year) {
-      obj[year] = {};
-      months.forEach(function(month) {
-        getAvg(airport, year, month, function(temp) {
-          if (month == 12) {
-            if (year != end)
-              obj[year+1][0] = temp;
-          } else obj[year][month % 12] = temp;
-          count++;
-          if (count == 12 * years.length) {
-            getAvg(airport, start-1, 12, function(t) {
-              obj[start][0] = t;
-              //memoize
-              airports[airport] = obj;
-              res.send(obj);
-            })
-          }
-        })
+  //if (airports[airport])
+  //  res.send(airports[airport])
+  //else {
+  var count = 0;
+  obj = {}
+  var years = [];
+  for (var i = start; i <= end; i++) {
+    years.push(i);
+  };
+  years.forEach(function(year) {
+    obj[year] = {};
+    months.forEach(function(month) {
+      getAvg(airport, year, month, function(temp) {
+        if (month == 12) {
+          if (year != end)
+            obj[year+1][0] = temp;
+        } else obj[year][month % 12] = temp;
+        count++;
+        if (count == 12 * years.length) {
+          getAvg(airport, start-1, 12, function(t) {
+            obj[start][0] = t;
+            //memoize
+            airports[airport] = obj;
+            res.send(obj);
+          })
+        }
       })
     })
-  }
+  })
+  //}
 })
 
 app.get('/api/city/:airport', function(req, res) {
