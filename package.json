@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/alex-osman/AverageWeather#readme",
   "dependencies": {
-    "express": "^4.14.1"
+    "express": "^4.14.1",
+    "mocha": "^3.2.0",
+    "supertest": "^3.0.0"
   }
 }

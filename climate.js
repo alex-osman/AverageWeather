@@ -6,18 +6,22 @@ app.use(express.static(__dirname + "/public"));
 
 var url1 = "https://www.wunderground.com/history/airport/"
 var url2 = "/1/MonthlyHistory.html?format=1&_ga=1.166488574.1780882849.1485640531" 
-var year = 2007
-var month = 8
+var props = {
+  "max": 1,
+  "avg": 2,
+  "min": 3,
+}
 
-var getAvg = function(airport, year, month, callback) {
-  request(url1 + airport + "/" + year + "/" + month + url2, function(err, response, body) {
+var getStats = function(airport, year, month, property, callback) {
+  var url = url1 + airport + "/" + year + "/" + month + url2
+  request(url, function(err, response, body) {
     if (err)
       throw err;
     var total = 0;
     count = 0;
     var data = body.split('\n');
     for (var i = 0; i < data.length; i++) {
-      var temp = parseInt(data[i].split(',')[2])
+      var temp = parseInt(data[i].split(',')[property])
       if (!isNaN(temp)) {
         //console.log(temp)
         total+= temp;
@@ -36,16 +40,15 @@ var obj = {};
 var airports = {}
 var cities = {}
 
-app.get('/api/:airport/:start/:end', function(req, res) {
+//Average
+app.get('/:prop/:airport/:start/:end', function(req, res) {
+  var prop = req.params.prop;
   var airport = req.params.airport
   var start = parseInt(req.params.start);
   var end = parseInt(req.params.end);
 
   console.log("Gathering " + airport + " " + start + "-" + end)
 
-  //if (airports[airport])
-  //  res.send(airports[airport])
-  //else {
   var count = 0;
   obj = {}
   var years = [];
@@ -55,14 +58,14 @@ app.get('/api/:airport/:start/:end', function(req, res) {
   years.forEach(function(year) {
     obj[year] = {};
     months.forEach(function(month) {
-      getAvg(airport, year, month, function(temp) {
+      getStats(airport, year, month, props[prop], function(temp) {
         if (month == 12) {
           if (year != end)
             obj[year+1][0] = temp;
         } else obj[year][month % 12] = temp;
         count++;
         if (count == 12 * years.length) {
-          getAvg(airport, start-1, 12, function(t) {
+          getStats(airport, start-1, 12, props[prop], function(t) {
             obj[start][0] = t;
             //memoize
             airports[airport] = obj;
@@ -72,7 +75,14 @@ app.get('/api/:airport/:start/:end', function(req, res) {
       })
     })
   })
-  //}
+})
+
+app.get('/test', function(req, res) {
+  console.log(props.max);
+  console.log(props.avg);
+  getStats('kmic', '2010', '1', props.max, function(temp) {
+    res.send("Avg Max: " + temp);
+  })
 })
 
 app.get('/api/city/:airport', function(req, res) {
@@ -114,5 +124,6 @@ app.get('/excel/:airport/:start/:end', function(req, res){
 
 
 var port = 3333;
-app.listen(port, '0.0.0.0');
+server = app.listen(port, '0.0.0.0');
 console.log("Listening on port " + port);
+module.exports = server;
