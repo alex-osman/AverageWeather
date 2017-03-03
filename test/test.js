@@ -5,7 +5,7 @@ describe("Average Temps", function() {
   var server = require('../climate');
   it('Return KPHL 2010', function testKPHL(done) {
     request(server)
-      .get('/avg/kphl/2010/2010')
+      .get('/api/avg/kphl/2010/2010')
       .expect(200, {
         "2010": {
           "0": 37,
@@ -25,7 +25,7 @@ describe("Average Temps", function() {
   })
   it('Return KPHL 2007-2016', function tenYearsKPHL(done) {
     request(server)
-      .get('/avg/kphl/2007/2016')
+      .get('/api/avg/kphl/2007/2016')
       .expect(200, {
         "2007": {
           "0": 43,
@@ -171,7 +171,7 @@ describe("Average Temps", function() {
   })
   it('Get Max Temp', function maxKMIC(done) {
     request(server)
-      .get('/max/kmic/2010/2010')
+      .get('/api/max/kmic/2010/2010')
       .expect(200, {
         "2010": {
           "0": 23,
@@ -191,7 +191,7 @@ describe("Average Temps", function() {
   })
   it('Get Min Temp', function maxKMIC(done) {
     request(server)
-      .get('/min/kmic/2009/2009')
+      .get('/api/min/kmic/2009/2009')
       .expect(200, {
         "2009": {
           "0": 4,

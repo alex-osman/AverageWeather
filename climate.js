@@ -10,6 +10,8 @@ var props = {
   "max": 1,
   "avg": 2,
   "min": 3,
+  "dew": 5,
+  "precipitation": 19
 }
 
 var getStats = function(airport, year, month, property, callback) {
@@ -21,16 +23,20 @@ var getStats = function(airport, year, month, property, callback) {
     count = 0;
     var data = body.split('\n');
     for (var i = 0; i < data.length; i++) {
-      var temp = parseInt(data[i].split(',')[property])
+      var temp = parseFloat(data[i].split(',')[property])
+      if (property != props.precipitation) {
+        temp = parseInt(temp);
+      }
       if (!isNaN(temp)) {
-        //console.log(temp)
         total+= temp;
         count++;
       }
     }
     if (month < 10)
       month = "0" + month;
-    callback(Math.round(total/count))
+    if (property == props.precipitation)
+      callback(Math.round((total / count) * 100) / 100)
+    else callback(Math.round(total/count))
   })
 }
 
@@ -39,9 +45,10 @@ var months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 var obj = {};
 var airports = {}
 var cities = {}
+var type = "";
 
 //Average
-app.get('/:prop/:airport/:start/:end', function(req, res) {
+app.get('/api/:prop/:airport/:start/:end', function(req, res) {
   var prop = req.params.prop;
   var airport = req.params.airport
   var start = parseInt(req.params.start);
@@ -54,6 +61,7 @@ app.get('/:prop/:airport/:start/:end', function(req, res) {
   var years = [];
   for (var i = start; i <= end; i++) {
     years.push(i);
+    obj[i] = {}
   };
   years.forEach(function(year) {
     obj[year] = {};
@@ -68,6 +76,7 @@ app.get('/:prop/:airport/:start/:end', function(req, res) {
           getStats(airport, start-1, 12, props[prop], function(t) {
             obj[start][0] = t;
             //memoize
+            type = prop;
             airports[airport] = obj;
             res.send(obj);
           })
@@ -103,6 +112,7 @@ app.get('/api/city/:airport', function(req, res) {
 })
 
 app.get('/excel/:airport/:start/:end', function(req, res){
+  console.log("Hello");
   var airport = req.params.airport
   var start = parseInt(req.params.start);
   var end = parseInt(req.params.end);
@@ -116,7 +126,7 @@ app.get('/excel/:airport/:start/:end', function(req, res){
   var result = rows.join('\n');
 
   res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-  res.setHeader("Content-Disposition", "attachment; filename=" + cities[airport].split(",")[0].replace(' ', '_') + ".csv");
+  res.setHeader("Content-Disposition", "attachment; filename=" + cities[airport].split(",")[0].replace(' ', '_') + "_" + type + ".csv");
   res.end(result, 'binary');
 });
 
